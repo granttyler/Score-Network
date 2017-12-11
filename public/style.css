@@ -150,3 +150,23 @@ ul {
   right: 0;
   width: 100%;
 }
+
+/*the following is the css for PDF download of the score*/
+@media print {
+  .login.page .form {
+  text-align: left;
+  }
+
+  .inputMessage {
+    border: 0px solid #000;
+    bottom: 0;
+    height: 0px;
+    left: 0;
+    outline: none;
+    padding-left: 0px;
+    position: absolute;
+    right: 0;
+    width: 0%;
+  }
+
+}

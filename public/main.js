@@ -28,6 +28,7 @@ $(function() {
 
   var socket = io();
 
+  //identify how many participants are on the page
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
@@ -38,12 +39,22 @@ $(function() {
     log(message);
   }
 
-  // Sets the client's username
+    // Sets the client's username
   function setUsername () {
     username = cleanInput($usernameInput.val().trim());
 
-    // If the username is valid
-    if (username) {
+    // If the username is Leader do something..
+    if (username == "Leader") {
+      $loginPage.fadeOut();
+      $chatPage.show();
+      $loginPage.off('click');
+      $currentInput = $inputMessage.focus();
+      socket.emit('a', Leader);
+
+      // Tell the server your username
+      socket.emit('add user', username);
+    }
+    else {
       $loginPage.fadeOut();
       $chatPage.show();
       $loginPage.off('click');
@@ -53,6 +64,7 @@ $(function() {
       socket.emit('add user', username);
     }
   }
+
 
   // Sends a chat message
   function sendMessage () {
@@ -66,7 +78,7 @@ $(function() {
         username: username,
         message: message
       });
-      // tell server to execute 'new message' and send along one parameter
+  // tell server to execute 'new message' and send along the message
       socket.emit('new message', message);
     }
   }
@@ -241,6 +253,7 @@ $(function() {
 
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', function (data) {
+    //conditional logic whethr or not to add the Chat message
     addChatMessage(data);
   });
 
